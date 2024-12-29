@@ -19,7 +19,7 @@ public class JsonManager {
         return mapper.readValue(file, mapper.getTypeFactory().constructCollectionType(ArrayList.class ,myClass));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al leer el archivo JSON: " + e.getMessage());
             return null;
         }
     }
@@ -30,7 +30,7 @@ public class JsonManager {
             mapper.writeValue(file, listClass);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al escribir el archivo JSON: " + e.getMessage());
             return false;
         }
     }
