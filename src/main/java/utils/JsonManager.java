@@ -11,7 +11,13 @@ public class JsonManager {
     public static <T> List<T> jsonDataToArrayList(File file, Class<T> myClass) throws IOException {
         try {
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
-            return mapper.readValue(file, mapper.getTypeFactory().constructCollectionType(ArrayList.class ,myClass));
+
+        if (!file.exists()) file.createNewFile();
+
+        if (file.length() == 0) return new ArrayList<>();
+
+        return mapper.readValue(file, mapper.getTypeFactory().constructCollectionType(ArrayList.class ,myClass));
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
