@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonManager {
-    public static <T> List<T> jsonDataToArrayList(File file, Class<T> myClass) throws IOException {
+public class JsonManager implements IJsonManager{
+    public <T> List<T> jsonDataToArrayList(File file, Class<T> myClass) {
         try {
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
@@ -20,11 +20,11 @@ public class JsonManager {
 
         } catch (IOException e) {
             System.err.println("Error al leer el archivo JSON: " + e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
     }
 
-    public static boolean ListToJson(File file, ArrayList listClass) throws IOException {
+    public boolean listToJson(File file, ArrayList listClass) throws IOException {
         try {
             ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
             mapper.writeValue(file, listClass);
