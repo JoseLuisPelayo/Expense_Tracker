@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ExpenseService {
-    ExpenseRepository repo = new ExpenseRepository();
+    ExpenseRepository repo;
 
-
-    public ExpenseService() throws IOException {
+    public ExpenseService(ExpenseRepository repo) throws IOException {
+        this.repo = repo;
     }
 
     public boolean addExpense(Expense expense) {
