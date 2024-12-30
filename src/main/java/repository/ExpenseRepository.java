@@ -1,7 +1,7 @@
 package repository;
 
 import javabean.Expense;
-import utils.JsonManager;
+import utils.IJsonManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,15 +9,17 @@ import java.util.ArrayList;
 
 public class ExpenseRepository implements Repository {
     ArrayList<Expense> expenses;
+    IJsonManager jsonManager;
 
-    public ExpenseRepository() throws IOException {
-        this.expenses = (ArrayList<Expense>) JsonManager.jsonDataToArrayList(new File("expenseJson.json"), Expense.class);
+    public ExpenseRepository(IJsonManager jsonManager) throws IOException {
+        this.jsonManager = jsonManager;
+        this.expenses = (ArrayList<Expense>) jsonManager.jsonDataToArrayList(new File("expenseJson.json"), Expense.class);
     }
 
     public boolean addExpense(Expense expense) {
        try {
         if (expenses.add(expense))
-            return JsonManager.ListToJson(new File("expenseJson.json"), expenses);
+            return jsonManager.listToJson(new File("expenseJson.json"), expenses);
 
         return false;
 
@@ -31,7 +33,7 @@ public class ExpenseRepository implements Repository {
         try {
        this.expenses.set(expenses.indexOf(expense), expense);
 
-       if (JsonManager.ListToJson(new File("expenseJson.json"), expenses))
+       if (jsonManager.listToJson(new File("expenseJson.json"), expenses))
             return expenses.get(expenses.indexOf(expense));
 
         return null;
@@ -45,7 +47,7 @@ public class ExpenseRepository implements Repository {
     public boolean deleteExpense(Expense expense) {
         try {
         if (this.expenses.remove(expense))
-            return JsonManager.ListToJson(new File("expenseJson.json"), expenses);
+            return jsonManager.listToJson(new File("expenseJson.json"), expenses);
 
         return false;
         } catch (IOException e) {
