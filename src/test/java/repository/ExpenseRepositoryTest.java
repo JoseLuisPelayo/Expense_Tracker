@@ -7,8 +7,7 @@ import utils.MockJsonManager;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class ExpenseRepositoryTest {
     private final ExpenseRepository repo = new ExpenseRepository(new MockJsonManager());
@@ -37,7 +36,7 @@ public class ExpenseRepositoryTest {
     @Test
     public void updateExpense() {
         //Arrange
-        Expense expense = repo.getAllExpenses().getLast();
+        Expense expense = repo.getAllExpenses().getFirst();
 
         expense.setDescription("New Description");
         expense.setAmount(2.99);
@@ -50,6 +49,18 @@ public class ExpenseRepositoryTest {
         assertEquals("New Description", modifiedExpense.getDescription());
         assertEquals(2.99, modifiedExpense.getAmount(), 0);
         assertEquals(LocalDate.of(2020, 1, 1), modifiedExpense.getDate());
+    }
+
+    @Test
+    public void updateNonExistentExpense() {
+        //Arrange
+        Expense expense = new Expense(99,"Unit Test",2.99,LocalDate.now());
+
+        //Act
+        Expense resp = repo.updateExpense(expense);
+
+        //Assert
+        assertNull(resp);
     }
 
     @Test
@@ -66,7 +77,22 @@ public class ExpenseRepositoryTest {
         assertFalse(repo.getAllExpenses().contains(expense));
     }
 
-    @Test public void getExpenseById() {
+    @Test
+    public void deleteNonExistentExpense() {
+        //Arrange
+        int listSize = repo.getAllExpenses().size();
+        Expense expense = new Expense(99,"Unit Test",2.99,LocalDate.now());
+
+        //Act
+        boolean resp = repo.deleteExpense(expense);
+
+        //Assert
+        assertFalse(resp);
+        assertEquals(listSize, repo.getAllExpenses().size());
+    }
+
+    @Test
+    public void getExpenseById() {
         //Arrange
         Expense expense = repo.getAllExpenses().getFirst();
         int id = expense.getId();
@@ -76,6 +102,18 @@ public class ExpenseRepositoryTest {
 
         //Assert
         assertEquals(expense, expense2);
+    }
+
+    @Test
+    public void getNonExistentExpenseById() {
+        //Arrange
+        int index = 0;
+
+        //Act
+        Expense resp = repo.getExpenseById(index);
+
+        //Assert
+        assertNull(resp);
     }
 
 }
