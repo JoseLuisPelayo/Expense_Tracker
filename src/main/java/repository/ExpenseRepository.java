@@ -31,12 +31,16 @@ public class ExpenseRepository implements Repository {
     @Override
     public Expense updateExpense(Expense expense) {
         try {
-       this.expenses.set(expenses.indexOf(expense), expense);
+            int index = expenses.indexOf(expense);
+            if (index == -1)
+                return null;
 
-       if (jsonManager.listToJson(new File("expenseJson.json"), expenses))
-            return expenses.get(expenses.indexOf(expense));
+            this.expenses.set(index, expense);
 
-        return null;
+            if (jsonManager.listToJson(new File("expenseJson.json"), expenses))
+                return expenses.get(index);
+
+            return null;
         } catch (IOException e) {
             return null;
         }
