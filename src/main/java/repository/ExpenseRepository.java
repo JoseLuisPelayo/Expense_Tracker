@@ -31,14 +31,10 @@ public class ExpenseRepository implements Repository {
     @Override
     public Expense updateExpense(Expense expense) {
         try {
-            int index = expenses.indexOf(expense);
-            if (index == -1)
-                return null;
-
-            this.expenses.set(index, expense);
+            this.expenses.set(expenses.indexOf(expense), expense);
 
             if (jsonManager.listToJson(new File("expenseJson.json"), expenses))
-                return expenses.get(index);
+                return expenses.get(expenses.indexOf(expense));
 
             return null;
         } catch (IOException e) {
@@ -50,6 +46,7 @@ public class ExpenseRepository implements Repository {
     @Override
     public boolean deleteExpense(Expense expense) {
         try {
+
         if (this.expenses.remove(expense))
             return jsonManager.listToJson(new File("expenseJson.json"), expenses);
 
