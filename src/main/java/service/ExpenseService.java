@@ -15,15 +15,24 @@ public class ExpenseService {
     }
 
     public boolean addExpense(Expense expense) {
-        return repo.addExpense(expense);
+        if (expense != null) return repo.addExpense(expense);
+
+        return false;
     }
 
     public Expense updateExpense(Expense expense) {
+        if (!repo.getAllExpenses().contains(expense)) return null;
         return repo.updateExpense(expense);
     }
 
     public boolean deleteExpense(int id) {
-        return repo.deleteExpense(this.repo.getExpenseById(id));
+        Expense expense = repo.getExpenseById(id);
+        if (expense != null) return repo.deleteExpense(expense);
+        return false;
+    }
+
+    public Expense getExpenseById(int id) {
+        return repo.getExpenseById(id);
     }
 
     public ArrayList<Expense> getAllExpenses() {
