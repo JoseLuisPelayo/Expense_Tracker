@@ -36,6 +36,18 @@ public class ExpenseServiceTest {
     }
 
     @Test
+    public void addExpenseWithVoidDescription() {
+        //Arrange
+        Expense expense = new Expense(4,"", 22.55, LocalDate.now());
+
+        //Act
+        boolean resp = serv.addExpense(expense);
+
+        //Assert
+        assertFalse(resp);
+    }
+
+    @Test
     public void addNullExpense() {
         //Arrange
         int listSize = serv.getAllExpenses().size();
