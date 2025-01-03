@@ -11,42 +11,41 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.concurrent.Callable;
 
-    @Command(
-            name= "add",
-            mixinStandardHelpOptions = true,
-            version = "1.0.0",
-            description = "This command add a expense to our history",
-            requiredOptionMarker = '*',
-            header = "Add expense",
-            footer = "%nDeveloped By Jose Luis G.Pelayo",
-            optionListHeading = "%nOptions are:%n"
-    )
+@Command(
+        name= "add",
+        mixinStandardHelpOptions = true,
+        description = "This command add a expense to our history",
+        requiredOptionMarker = '*',
+        header = "Update a expense",
+        footer = "%nDeveloped By Jose Luis G.Pelayo",
+        optionListHeading = "%nOptions are:%n"
+)
 
 public class AddExpenseCommand implements Callable<Integer> {
-        ExpenseService serv = new ExpenseService(new ExpenseRepository(new JsonManager()));
+    ExpenseService serv = new ExpenseService(new ExpenseRepository(new JsonManager()));
 
-        public AddExpenseCommand() throws IOException {
-        }
+    public AddExpenseCommand() throws IOException {
+    }
 
-        @CommandLine.Parameters(
-                index = "0",
-                paramLabel = "<expense description>"
-        )
-        String description;
+    @CommandLine.Parameters(
+            index = "0",
+            paramLabel = "<expense description>"
+    )
+    String description;
 
-        @CommandLine.Parameters(
-                index = "1",
-                paramLabel = "<expense amount>"
-        )
-        double amount;
+    @CommandLine.Parameters(
+            index = "1",
+            paramLabel = "<expense amount>"
+    )
+    double amount;
 
-        @CommandLine.Option(
-                names = {"-d", "--date"},
-                paramLabel = "<expense date>"
-        )
-        LocalDate date;
+    @CommandLine.Option(
+            names = {"-d", "--date"},
+            paramLabel = "<expense date>"
+    )
+    LocalDate date;
 
-        @Override
+    @Override
     public Integer call() throws IOException {
         Expense expense = new Expense(
                 (serv.getAllExpenses().isEmpty()) ? 1 : serv.getAllExpenses().getLast().getId() + 1,
@@ -59,9 +58,9 @@ public class AddExpenseCommand implements Callable<Integer> {
             expense.setDate(date);
 
         if (serv.addExpense(expense)) {
-        System.out.println("[Add] Adding expense");
-        System.out.println(expense);
-        return 0;
+            System.out.println("[Add] Adding expense");
+            System.out.println(expense);
+            return 0;
         } else {
             System.out.println("[Add] Failed to add expense");
             return 1;
