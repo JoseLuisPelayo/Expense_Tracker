@@ -1,9 +1,6 @@
 package cliCommands;
 
-import cliCommands.sub.AddExpenseCommand;
-import cliCommands.sub.DeleteExpenseCommand;
-import cliCommands.sub.GetExpenseByIdCommand;
-import cliCommands.sub.UpdateExpenseCommand;
+import cliCommands.sub.*;
 import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
@@ -22,7 +19,8 @@ import java.util.concurrent.Callable;
                 UpdateExpenseCommand.class,
                 AddExpenseCommand.class,
                 DeleteExpenseCommand.class,
-                GetExpenseByIdCommand.class
+                GetExpenseByIdCommand.class,
+                GetAllExpensesCommand.class
         }
 )
 public class ExpensesCommand implements Callable<Integer> {
@@ -31,9 +29,9 @@ public class ExpensesCommand implements Callable<Integer> {
 
 
     public static void main(String[] args) {
-        args = new String[2];
-        args[0] = "find";
-        args[1] = "-h";
+        args = new String[1];
+        args[0] = "ls";
+//        args[1] = "-h";
 
 
         if (args.length == 0) {
