@@ -1,8 +1,8 @@
-package repository;
+package service;
 
 import javabean.Expense;
 import org.junit.Test;
-import service.ExpenseService;
+import repository.ExpenseRepository;
 import utils.MockJsonManager;
 
 import java.io.IOException;
@@ -169,7 +169,7 @@ public class ExpenseServiceTest {
         assertEquals(0, expenses.size());
 
         expenses.add( new Expense(1, "Unit Test", 2.50, LocalDate.of(2024, 1, 1)));
-        expenses.add(new Expense(2, "Unit Test2", 2.50, LocalDate.of(2024, 2, 1)));
+        expenses.add(new Expense(2, "Unit Test2", 2.50, LocalDate.of(LocalDate.now().getYear(), 2, 1)));
 
         //Act
         double sum = serv.getExpensesSummary();

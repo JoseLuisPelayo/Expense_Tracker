@@ -1,9 +1,8 @@
 package cliCommands;
 
-import cliCommands.sub.AddExpenseCommand;
+import cliCommands.sub.*;
 import picocli.CommandLine;
 
-import java.time.LocalDate;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(
@@ -14,10 +13,15 @@ import java.util.concurrent.Callable;
         requiredOptionMarker = '*',
         header = "Xpense Tracker",
         footer = "%nDeveloped By Jose Luis G.Pelayo",
-        optionListHeading = "%nOptions are:",
-        commandListHeading = "%nCommands are:",
+        optionListHeading = "Options are:%n",
+        commandListHeading = "Commands are:%n",
         subcommands = {
-                AddExpenseCommand.class
+                UpdateExpenseCommand.class,
+                AddExpenseCommand.class,
+                DeleteExpenseCommand.class,
+                GetExpenseByIdCommand.class,
+                GetAllExpensesCommand.class,
+                GetSummaryExpensesCommand.class
         }
 )
 public class ExpensesCommand implements Callable<Integer> {
@@ -26,7 +30,11 @@ public class ExpensesCommand implements Callable<Integer> {
 
 
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new ExpensesCommand()).execute("add", "", "22.55");
+        if (args.length == 0) {
+        args = new String[1];
+            args[0] = "-h";
+        }
+        int exitCode = new CommandLine(new ExpensesCommand()).execute(args);
         System.exit(exitCode);
     }
 
