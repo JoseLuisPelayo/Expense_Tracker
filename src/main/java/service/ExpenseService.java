@@ -15,7 +15,9 @@ public class ExpenseService {
     }
 
     public boolean addExpense(Expense expense) {
-        if (expense != null) return repo.addExpense(expense);
+        if (expense != null)
+            if (!expense.getDescription().isEmpty() && expense.getAmount() > 0)
+                return repo.addExpense(expense);
 
         return false;
     }
