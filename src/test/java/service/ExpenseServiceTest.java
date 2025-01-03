@@ -95,6 +95,54 @@ public class ExpenseServiceTest {
     }
 
     @Test
+    public void updateExpenseWhithEmptyDescription() {
+        //Arrange
+        Expense expense = serv.getAllExpenses().getFirst();
+
+        expense.setDescription("");
+        expense.setAmount(2.99);
+        expense.setDate(LocalDate.of(2020, 1, 1));
+
+        //Act
+        Expense modifiedExpense = serv.updateExpense(expense);
+
+        //Assert
+        assertNull(modifiedExpense);
+    }
+
+    @Test
+    public void updateExpenseWithAmountZero() {
+        //Arrange
+        Expense expense = serv.getAllExpenses().getFirst();
+
+        expense.setDescription("Test description");
+        expense.setAmount(0);
+        expense.setDate(LocalDate.of(2020, 1, 1));
+
+        //Act
+        Expense modifiedExpense = serv.updateExpense(expense);
+
+        //Assert
+        assertNull(modifiedExpense);
+    }
+
+    @Test
+    public void updateExpenseWithNegativeAmount() {
+        //Arrange
+        Expense expense = serv.getAllExpenses().getFirst();
+
+        expense.setDescription("Test description");
+        expense.setAmount(-100);
+        expense.setDate(LocalDate.of(2020, 1, 1));
+
+        //Act
+        Expense modifiedExpense = serv.updateExpense(expense);
+
+        //Assert
+        assertNull(modifiedExpense);
+    }
+
+    @Test
     public void updateNonExistentExpense() {
         //Arrange
         Expense expense = new Expense(99,"Unit Test",2.99,LocalDate.now());
