@@ -1,6 +1,7 @@
 package cliCommands;
 
 import cliCommands.sub.AddExpenseCommand;
+import cliCommands.sub.DeleteExpenseCommand;
 import cliCommands.sub.UpdateExpenseCommand;
 import picocli.CommandLine;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.Callable;
         subcommands = {
                 UpdateExpenseCommand.class,
                 AddExpenseCommand.class,
+                DeleteExpenseCommand.class
         }
 )
 public class ExpensesCommand implements Callable<Integer> {
@@ -27,7 +29,16 @@ public class ExpensesCommand implements Callable<Integer> {
 
 
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new ExpensesCommand()).execute("add", "", "22.55");
+        args = new String[2];
+        args[0] = "rm";
+        args[1] = "2";
+
+
+        if (args.length == 0) {
+        args = new String[1];
+            args[0] = "-h";
+        }
+        int exitCode = new CommandLine(new ExpensesCommand()).execute(args);
         System.exit(exitCode);
     }
 
