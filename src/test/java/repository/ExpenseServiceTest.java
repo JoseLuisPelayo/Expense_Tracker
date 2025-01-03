@@ -28,11 +28,12 @@ public class ExpenseServiceTest {
                                     LocalDate.now()
                                     );
         //Act
-        serv.addExpense(expense);
+        boolean resp = serv.addExpense(expense);
 
         //Assert
-        assertEquals(listSize+1, serv.getAllExpenses().size());
+        assertEquals(listSize + 1, serv.getAllExpenses().size());
         assertEquals(expense, serv.getAllExpenses().getLast());
+        assertTrue(resp);
     }
 
     @Test
@@ -45,6 +46,21 @@ public class ExpenseServiceTest {
 
         //Assert
         assertFalse(resp);
+    }
+
+    @Test
+    public void addExpenseWithNegativeAmount() {
+        //Arrange
+        Expense expense = new Expense(4,"", 0, LocalDate.now());
+        Expense expense2 = new Expense(4,"", -10, LocalDate.now());
+
+        //Act
+        boolean resp = serv.addExpense(expense);
+        boolean resp2 = serv.addExpense(expense2);
+
+        //Assert
+        assertFalse(resp);
+        assertFalse(resp2);
     }
 
     @Test
@@ -170,7 +186,7 @@ public class ExpenseServiceTest {
         assertEquals(0, expenses.size());
 
         expenses.add( new Expense(1, "Unit Test", 2.50, LocalDate.of(2024, 1, 1)));
-        expenses.add(new Expense(2, "Unit Test2", 2.50, LocalDate.of(2024, 2, 1)));
+        expenses.add(new Expense(2, "Unit Test2", 2.50, LocalDate.of(LocalDate.now().getYear(), 2, 1)));
 
         //Act
         double sum = serv.getExpensesSummary(2);
