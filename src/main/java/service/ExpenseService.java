@@ -23,7 +23,13 @@ public class ExpenseService {
     }
 
     public Expense updateExpense(Expense expense) {
-        if (!repo.getAllExpenses().contains(expense)) return null;
+        if (
+                !repo.getAllExpenses().contains(expense)
+                || expense.getDescription().isEmpty()
+                || expense.getAmount() <= 0
+        )
+            return null;
+
         return repo.updateExpense(expense);
     }
 
