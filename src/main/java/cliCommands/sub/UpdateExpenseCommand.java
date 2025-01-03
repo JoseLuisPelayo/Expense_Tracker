@@ -53,6 +53,7 @@ public class UpdateExpenseCommand implements Callable<Integer> {
             return 1;
         }
 
+        //TODO
         if (amount > 0 || (description != null && !description.isBlank())) {
             if (amount > 0) expense.setAmount(amount);
             if (description != null && !description.isBlank()) expense.setDescription(description);

@@ -1,7 +1,5 @@
 package cliCommands.sub;
 
-import picocli.CommandLine;
-
 import javabean.Expense;
 import picocli.CommandLine.*;
 import repository.ExpenseRepository;
@@ -9,7 +7,6 @@ import service.ExpenseService;
 import utils.JsonManager;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 

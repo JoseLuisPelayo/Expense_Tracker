@@ -42,6 +42,6 @@ public class GetExpenseByIdCommand implements Callable<Integer> {
         }
 
             System.out.println("Expense with ID " + expenseID + " not found");
-            return 1;
+            return 0;
     }
 }

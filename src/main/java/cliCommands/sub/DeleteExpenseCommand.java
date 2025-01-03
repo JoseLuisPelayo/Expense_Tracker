@@ -40,7 +40,7 @@ public class DeleteExpenseCommand implements Callable<Integer> {
         }
 
         System.out.println("Expense with id:" + id + " not found");
-        return 1;
+        return 0;
     }
 
 }

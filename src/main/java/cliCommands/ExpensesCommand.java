@@ -20,7 +20,8 @@ import java.util.concurrent.Callable;
                 AddExpenseCommand.class,
                 DeleteExpenseCommand.class,
                 GetExpenseByIdCommand.class,
-                GetAllExpensesCommand.class
+                GetAllExpensesCommand.class,
+                GetSummaryExpensesCommand.class
         }
 )
 public class ExpensesCommand implements Callable<Integer> {
@@ -29,11 +30,6 @@ public class ExpensesCommand implements Callable<Integer> {
 
 
     public static void main(String[] args) {
-        args = new String[1];
-        args[0] = "ls";
-//        args[1] = "-h";
-
-
         if (args.length == 0) {
         args = new String[1];
             args[0] = "-h";
