@@ -38,8 +38,13 @@ public class ExpensesCommand implements Callable<Integer> {
         System.exit(exitCode);
     }
 
-    public Integer call() throws Exception {
+    public Integer call() {
+        try {
         System.out.println("[Xpense Tracker] Hello to Expense Tracker");
         return SUCCESS;
+        } catch (Exception e) {
+            System.out.println("[Xpense Tracker] Error: " + e.getMessage());
+            return FAILURE;
+        }
     }
 }
