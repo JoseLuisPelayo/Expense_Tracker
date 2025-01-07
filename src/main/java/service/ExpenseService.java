@@ -2,13 +2,14 @@ package service;
 
 import javabean.Expense;
 import repository.ExpenseRepository;
+import repository.Repository;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ExpenseService {
-    ExpenseRepository repo;
+    Repository repo;
 
     public ExpenseService(ExpenseRepository repo) throws IOException {
         this.repo = repo;
