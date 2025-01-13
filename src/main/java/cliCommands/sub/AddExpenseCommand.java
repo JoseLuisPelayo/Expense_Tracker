@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.concurrent.Callable;
 
+/**
+ * This command class is responsible for adding an expense to the history.
+ * It uses the picocli library to handle command line arguments and options.
+ */
 @Command(
         name= "add",
         mixinStandardHelpOptions = true,
@@ -24,6 +28,11 @@ import java.util.concurrent.Callable;
 public class AddExpenseCommand implements Callable<Integer> {
     ExpenseService serv = new ExpenseService(new ExpenseRepository(new JsonManager()));
 
+    /**
+     * Constructs an AddExpenseCommand and initializes the ExpenseService.
+     *
+     * @throws IOException if an I/O error occurs while initializing the ExpenseService
+     */
     public AddExpenseCommand() throws IOException {
     }
 
@@ -45,6 +54,13 @@ public class AddExpenseCommand implements Callable<Integer> {
     )
     LocalDate date;
 
+    /**
+     * Executes the add expense command.
+     * It creates a new Expense object and adds it to the expense history.
+     *
+     * @return 0 if the expense was successfully added, 1 otherwise
+     * @throws IOException if an I/O error occurs while adding the expense
+     */
     @Override
     public Integer call() throws IOException {
         Expense expense = new Expense(
