@@ -11,6 +11,11 @@ import utils.JsonManager;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
+
+/**
+ * This command class is responsible for finding an expense by its ID.
+ * It uses the picocli library to handle command line arguments and options.
+ */
 @Command(
         name= "find",
         mixinStandardHelpOptions = true,
@@ -25,6 +30,11 @@ import java.util.concurrent.Callable;
 public class GetExpenseByIdCommand implements Callable<Integer> {
     ExpenseService serv = new ExpenseService(new ExpenseRepository(new JsonManager()));
 
+    /**
+     * Constructs a GetExpenseByIdCommand.
+     *
+     * @throws IOException if an I/O error occurs while initializing the ExpenseService
+     */
     public GetExpenseByIdCommand() throws IOException {
     }
 
@@ -34,6 +44,12 @@ public class GetExpenseByIdCommand implements Callable<Integer> {
     )
     int expenseID;
 
+    /**
+     * Executes the find expense command.
+     * It retrieves and prints the expense with the specified ID.
+     *
+     * @return 0 if the expense was successfully found, 1 otherwise
+     */
     public Integer call() {
         Expense expense = serv.getExpenseById(expenseID);
         if (expense != null) {
