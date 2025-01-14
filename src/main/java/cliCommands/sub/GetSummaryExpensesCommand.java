@@ -8,6 +8,10 @@ import utils.JsonManager;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
+/**
+ * This command class is responsible for providing a summary of expenses.
+ * It uses the picocli library to handle command line arguments and options.
+ */
 @Command(
         name = "summary",
         mixinStandardHelpOptions = true,
@@ -22,7 +26,11 @@ import java.util.concurrent.Callable;
 public class GetSummaryExpensesCommand implements Callable<Integer> {
     ExpenseService serv = new ExpenseService(new ExpenseRepository(new JsonManager()));
 
-
+    /**
+     * Constructs a GetSummaryExpensesCommand.
+     *
+     * @throws IOException if an I/O error occurs while initializing the ExpenseService
+     */
     public GetSummaryExpensesCommand() throws IOException {
     }
 
@@ -33,6 +41,12 @@ public class GetSummaryExpensesCommand implements Callable<Integer> {
     )
     int month;
 
+    /**
+     * Executes the summary expenses command.
+     * It retrieves and prints the summary of expenses, either for the entire year or for a specific month if specified.
+     *
+     * @return 0 if the command executed successfully
+     */
     public Integer call() {
         if (month == 0) {
             System.out.println("The summary of the expenses are: " + serv.getExpensesSummary());
