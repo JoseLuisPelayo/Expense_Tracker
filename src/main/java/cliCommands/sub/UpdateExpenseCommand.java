@@ -10,6 +10,10 @@ import utils.JsonManager;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
+/**
+ * This command class is responsible for updating an expense.
+ * It uses the picocli library to handle command line arguments and options.
+ */
     @Command(
             name= "update",
             mixinStandardHelpOptions = true,
@@ -23,6 +27,11 @@ import java.util.concurrent.Callable;
 public class UpdateExpenseCommand implements Callable<Integer> {
         ExpenseService serv = new ExpenseService(new ExpenseRepository(new JsonManager()));
 
+    /**
+     * Constructs an UpdateExpenseCommand.
+     *
+     * @throws IOException if an I/O error occurs while initializing the ExpenseService
+     */
         public UpdateExpenseCommand() throws IOException {
         }
 
@@ -44,7 +53,12 @@ public class UpdateExpenseCommand implements Callable<Integer> {
         )
         double amount;
 
-
+    /**
+     * Executes the update expense command.
+     * It retrieves, updates, and saves the expense with the specified ID.
+     *
+     * @return 0 if the expense was successfully updated, 1 otherwise
+     */
         @Override
     public Integer call() {
         Expense expense = serv.getExpenseById(expenseID);
@@ -53,7 +67,6 @@ public class UpdateExpenseCommand implements Callable<Integer> {
             return 1;
         }
 
-        //TODO
         if (amount > 0 || (description != null && !description.isBlank())) {
             if (amount > 0) expense.setAmount(amount);
             if (description != null && !description.isBlank()) expense.setDescription(description);
