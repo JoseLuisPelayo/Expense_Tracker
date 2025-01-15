@@ -1,8 +1,8 @@
 # Xpense Tracker
 Xpense tracker is a command-line application for tacking and managing expenses.  
-It provides a straitforward way to interact with a expenses database using a simple cli interface.
+It provides a straightforward way to interact with a expenses database using a simple cli interface.
   
-## It allow users to
+## It allows users to
 > - Add new expenses with date, description and amount.  
 > - Update existing expenses.
 > - Delete expenses.  
