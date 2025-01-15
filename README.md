@@ -17,7 +17,7 @@ Ensure you have the following installed on your system:
     Java Development Kit (JDK)  
     Apache Maven  
 
-2. Navigate to the directory where you want to install the application and clone or download this repository:
+2. Navigate to the directory where you want to install the application and clone or download this repository:  
      `git clone https://github.com/JoseLuisPelayo/Expense_Tracke`
    
 3. Navigate to the project  
