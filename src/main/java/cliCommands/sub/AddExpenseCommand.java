@@ -20,7 +20,7 @@ import java.util.concurrent.Callable;
         mixinStandardHelpOptions = true,
         description = "This command add a expense to our history",
         requiredOptionMarker = '*',
-        header = "Update a expense",
+        header = "Add a expense",
         footer = "%nDeveloped By Jose Luis G.Pelayo",
         optionListHeading = "%nOptions are:%n"
 )
@@ -49,6 +49,22 @@ public class AddExpenseCommand implements Callable<Integer> {
     double amount;
 
     @CommandLine.Option(
+            names = {"-c", "--category"},
+            paramLabel = "<expense category>",
+            description = """
+                    set the category of the expense
+                     possible values:
+                        -GroceriesLeisure
+                        -Electronics
+                        -Utilities
+                        -Clothing
+                        -Health
+                        -Others
+                    """
+    )
+    String category;
+
+    @CommandLine.Option(
             names = {"-d", "--date"},
             paramLabel = "<expense date>"
     )
@@ -63,12 +79,20 @@ public class AddExpenseCommand implements Callable<Integer> {
      */
     @Override
     public Integer call() throws IOException {
-        Expense expense = new Expense(
-                (serv.getAllExpenses().isEmpty()) ? 1 : serv.getAllExpenses().getLast().getId() + 1,
-                description,
-                amount,
-                LocalDate.now()
-        );
+        Expense expense = new Expense();
+        expense.setId(serv.getAllExpenses().isEmpty() ? 1 : serv.getAllExpenses().getLast().getId() + 1);
+        expense.setDescription(description);
+        expense.setAmount(amount);
+        expense.setDate(date);
+        expense.setCategory(Expense.Category.Others);
+
+        if (category != null && !category.isEmpty()) {
+           if (!expense.selectCategory(category))
+               System.out.println(
+                       "This category does not exist \n" +
+                       "The expense be added to others category"
+               );
+        }
 
         if (date != null)
             expense.setDate(date);
