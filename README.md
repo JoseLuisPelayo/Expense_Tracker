@@ -97,5 +97,18 @@ This command provide the summary of  expenses
   - Options are:  
   -h, --help      Show this help message and exit.  
   -m, --month=<month number 1 to 12>  List the summary of the month expenses in the current year  
-  -V, --version   Print version information and exit.  
+  -V, --version   Print version information and exit.
+
+
+## Uninstall
+1. To uninstall the app remove the alias from the enviroment path.  
+2. Reload the file path or restart CMD.  
+3. Remove the directory where you installed the application.   
+
+## How to contribute
+If you would like to contribute to XpenseTracker, please fork the repository, create a branch for your feature or bug fix, and then submit a pull request.  
+
+## URL Project
+[Roadmap.sh Project](https://roadmap.sh/projects/expense-tracker)
+
 
