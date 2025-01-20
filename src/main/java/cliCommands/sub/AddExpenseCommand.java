@@ -86,12 +86,15 @@ public class AddExpenseCommand implements Callable<Integer> {
         expense.setDate(date);
         expense.setCategory(Expense.Category.Others);
 
+        if (date == null) date = LocalDate.now();
+
         if (category != null && !category.isEmpty()) {
            if (!expense.selectCategory(category))
-               System.out.println(
-                       "This category does not exist \n" +
+               System.err.println(
+                       "This category: " + category + " does not exist \n" +
                        "The expense be added to others category"
                );
+            expense.setCategory(Expense.Category.Others);
         }
 
         if (date != null)
