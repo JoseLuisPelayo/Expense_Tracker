@@ -146,7 +146,7 @@ public class Expense {
      * @param category the category of the expense to be set.
      * @throws IllegalArgumentException Throws an illegalArgumentException if the param category is null or is empty
      */
-    public void selectCategory(String category) throws IllegalArgumentException {
+    public boolean selectCategory(String category) throws IllegalArgumentException {
         if (category == null || category.isBlank()) {
             throw new IllegalArgumentException("Category cannot be null or blank");
         }
@@ -159,7 +159,11 @@ public class Expense {
             case "clothing" -> this.category = Category.Clothing;
             case "health" -> this.category = Category.Health;
             case "others" -> this.category = Category.Others;
+            default -> {
+                return false;
+            }
         }
+        return true;
     }
 }
 
