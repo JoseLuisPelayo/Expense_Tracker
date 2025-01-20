@@ -48,6 +48,22 @@ public class UpdateExpenseCommand implements Callable<Integer> {
         String description;
 
         @CommandLine.Option(
+                names = {"-c", "--category"},
+                paramLabel = "<expense category>",
+                description = """
+                    set the category of the expense
+                     possible values:
+                        -GroceriesLeisure
+                        -Electronics
+                        -Utilities
+                        -Clothing
+                        -Health
+                        -Others
+                    """
+        )
+        String category;
+
+        @CommandLine.Option(
                 names = {"-a", "--amount"},
                 paramLabel = "<expense amount>"
         )
@@ -67,9 +83,21 @@ public class UpdateExpenseCommand implements Callable<Integer> {
             return 1;
         }
 
-        if (amount > 0 || (description != null && !description.isBlank())) {
+        if (
+                amount > 0 ||
+                (description != null && !description.isBlank()) ||
+                (category != null && !category.isBlank())
+                ) {
             if (amount > 0) expense.setAmount(amount);
             if (description != null && !description.isBlank()) expense.setDescription(description);
+            if (category != null && !category.isEmpty()) {
+                if (!expense.selectCategory(category))
+                    System.err.println(
+                            "This category: " + category + " does not exist \n" +
+                                    "The expense be added to others category"
+                    );
+                expense.setCategory(Expense.Category.Others);
+            }
 
             Expense updatedExpense = serv.updateExpense(expense);
 
