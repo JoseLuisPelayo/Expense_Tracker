@@ -1,6 +1,7 @@
 package service;
 
 import javabean.Expense;
+import org.junit.Assert;
 import org.junit.Test;
 import repository.ExpenseRepository;
 import utils.MockJsonManager;
@@ -388,7 +389,7 @@ public class ExpenseServiceTest {
         expense.setId(1);
         expense.setDescription("Unit Test");
         expense.setAmount(2.50);
-        expense.setDate(LocalDate.of(2024,1,1));
+        expense.setDate(LocalDate.of(LocalDate.now().getYear(),1,1));
         expense.setCategory(Expense.Category.Health);
 
         expense2.setId(2);
@@ -459,6 +460,39 @@ public class ExpenseServiceTest {
         assertEquals(0, expenses.size());
         assertEquals(0, sum, 0);
     }
-    
 
+    /**
+     * Tests the getExpensesSummary method for a specific category.
+     * It verifies that the summary of expenses for the given category is calculated correctly.
+     */
+    @Test
+    public void getExpensesSummaryByCategory() {
+        //Arrange
+        ArrayList<Expense> expenses = serv.getAllExpenses();
+        expenses.removeAll(serv.getAllExpenses());
+
+        Expense expense = new Expense();
+        Expense expense2 = new Expense();
+
+        expense.setId(1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(2.50);
+        expense.setDate(LocalDate.of(2024,1,1));
+        expense.setCategory(Expense.Category.Health);
+
+        expense2.setId(2);
+        expense2.setDescription("Unit Test2");
+        expense2.setAmount(2.50);
+        expense2.setDate(LocalDate.of(LocalDate.now().getYear(),2,1));
+        expense2.setCategory(Expense.Category.Others);
+
+        expenses.add(expense);
+        expenses.add(expense2);
+
+        //Act
+        double res = serv.getExpensesSummary(Expense.Category.Health);
+
+        //Assert
+        assertEquals(2.50, res, 0);
+    }
 }
