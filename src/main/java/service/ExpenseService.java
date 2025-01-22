@@ -90,6 +90,30 @@ public class ExpenseService {
     }
 
     /**
+     * Validates an expense object.
+     * This method checks whether the given expense object is valid. An expense is considered valid if:
+     * - It is not null.
+     * - The description is not null and not empty.
+     * - The amount is greater than 0.
+     * - The category is not null.
+     *
+     * @param expense The expense object to be validated.
+     * @return {@code true} if the expense is valid; {@code false} otherwise.
+     */
+    private boolean expenseIsValid(Expense expense) {
+        if (
+                expense == null
+                || expense.getDescription() == null
+                || expense.getDescription().isEmpty()
+                || expense.getAmount() <= 0
+                || expense.getCategory() == null
+        )
+            return false;
+
+        return true;
+    }
+
+    /**
      * Calculates the total amount of all expenses of the current year.
      *
      * @return the sum of all expenses
@@ -128,28 +152,24 @@ public class ExpenseService {
     }
 
     /**
-     * Validates an expense object.
+     * Calculates the total amount of expenses for a specific category.
+     * This method filters the list of all expenses to include only those in the specified category,
+     * then calculates the sum of their amounts.
      *
-     * This method checks whether the given expense object is valid. An expense is considered valid if:
-     * - It is not null.
-     * - The description is not null and not empty.
-     * - The amount is greater than 0.
-     * - The category is not null.
-     *
-     * @param expense The expense object to be validated.
-     * @return {@code true} if the expense is valid; {@code false} otherwise.
+     * @param category The category for which to calculate the total expenses.
+     * @return The total amount of expenses for the specified category.
      */
-    private boolean expenseIsValid(Expense expense) {
-        if (
-                expense == null
-                || expense.getDescription() == null
-                || expense.getDescription().isEmpty()
-                || expense.getAmount() <= 0
-                || expense.getCategory() == null
-        )
-            return false;
+    public double getExpensesSummary(Expense.Category category) {
+        double sum = 0;
+        List<Expense> expenses = getAllExpenses().stream()
+                .filter(expense -> expense.getCategory().equals(category))
+                .toList();
 
-        return true;
+        for (Expense expense : expenses) {
+            sum += expense.getAmount();
+        }
+
+        return sum;
     }
 
     /**
