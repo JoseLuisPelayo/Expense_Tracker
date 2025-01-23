@@ -139,6 +139,78 @@ public class ExpenseServiceTest {
     }
 
     /**
+     * Tests the addExpense method with a less than 1900 year date.
+     * It verifies that the expense is not added and the method returns false.
+     */
+    @Test
+    public void addExpenseWithLessThan1900Year() {
+        //Arrange
+        int listSize = serv.getAllExpenses().size();
+        Expense expense = new Expense();
+
+        expense.setId(serv.getAllExpenses().getLast().getId() + 1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(0);
+        expense.setDate(LocalDate.of(1899, 1, 1));
+        expense.setCategory(Expense.Category.Health);
+
+        //Act
+        boolean resp = serv.addExpense(expense);
+
+        //Assert
+        assertEquals(listSize, serv.getAllExpenses().size());
+        assertFalse(resp);
+    }
+
+    /**
+     * Tests the addExpense method with a year 0 date.
+     * It verifies that the expense is not added and the method returns false.
+     */
+    @Test
+    public void addExpenseWithYear0() {
+        //Arrange
+        int listSize = serv.getAllExpenses().size();
+        Expense expense = new Expense();
+
+        expense.setId(serv.getAllExpenses().getLast().getId() + 1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(0);
+        expense.setDate(LocalDate.of(0, 1, 1));
+        expense.setCategory(Expense.Category.Health);
+
+        //Act
+        boolean resp = serv.addExpense(expense);
+
+        //Assert
+        assertEquals(listSize, serv.getAllExpenses().size());
+        assertFalse(resp);
+    }
+
+    /**
+     * Tests the addExpense method with a negative year date.
+     * It verifies that the expense is not added and the method returns false.
+     */
+    @Test
+    public void addExpenseWithNegativeYear() {
+        //Arrange
+        int listSize = serv.getAllExpenses().size();
+        Expense expense = new Expense();
+
+        expense.setId(serv.getAllExpenses().getLast().getId() + 1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(0);
+        expense.setDate(LocalDate.of(-120, 1, 1));
+        expense.setCategory(Expense.Category.Health);
+
+        //Act
+        boolean resp = serv.addExpense(expense);
+
+        //Assert
+        assertEquals(listSize, serv.getAllExpenses().size());
+        assertFalse(resp);
+    }
+
+    /**
      * Tests the addExpense method with a null expense.
      * It verifies that the expenses are not added and the list size remains the same.
      */
