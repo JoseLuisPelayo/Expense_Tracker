@@ -495,4 +495,130 @@ public class ExpenseServiceTest {
         //Assert
         assertEquals(2.50, res, 0);
     }
+
+    /**
+     * Tests the getExpensesSummary method with a null category.
+     * It verifies that the summary of expenses for the null category is zero.
+     */
+    @Test
+    public void getExpensesSummaryByCategoryWithNullCategory() {
+        //Arrange
+        ArrayList<Expense> expenses = serv.getAllExpenses();
+
+        //Act
+        double res = serv.getExpensesSummary(null);
+
+        //Assert
+        assertEquals(0, res, 0);
+    }
+
+    /**
+     * Tests the getYearExpensesSummary method for a specific year.
+     * It verifies that the summary of expenses for the given year is calculated correctly.
+     */
+    @Test
+    public void getExpensesSummaryByYear() {
+        //Arrange
+        ArrayList<Expense> expenses = serv.getAllExpenses();
+
+        expenses.removeAll(serv.getAllExpenses());
+
+        Expense expense = new Expense();
+        Expense expense2 = new Expense();
+
+        expense.setId(1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(2.50);
+        expense.setDate(LocalDate.of(2024,1,1));
+        expense.setCategory(Expense.Category.Health);
+
+        expense2.setId(2);
+        expense2.setDescription("Unit Test2");
+        expense2.setAmount(2.50);
+        expense2.setDate(LocalDate.of(2025,2,1));
+        expense2.setCategory(Expense.Category.Others);
+
+        expenses.add(expense);
+        expenses.add(expense2);
+
+        //Act
+        double res = serv.getYearExpensesSummary(2024);
+
+        //Assert
+        assertEquals(2.50, res, 0);
+    }
+
+    /**
+     * Tests the getYearExpensesSummary method for the year 0.
+     * It verifies that the summary of expenses for the year 0 is 0.
+     */
+    @Test
+    public void getExpensesSummaryByYearWith0Year() {
+        //Arrange
+        ArrayList<Expense> expenses = serv.getAllExpenses();
+
+        expenses.removeAll(serv.getAllExpenses());
+
+        Expense expense = new Expense();
+        Expense expense2 = new Expense();
+
+        expense.setId(1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(2.50);
+        expense.setDate(LocalDate.of(2024,1,1));
+        expense.setCategory(Expense.Category.Health);
+
+        expense2.setId(2);
+        expense2.setDescription("Unit Test2");
+        expense2.setAmount(2.50);
+        expense2.setDate(LocalDate.of(2025,2,1));
+        expense2.setCategory(Expense.Category.Others);
+
+        expenses.add(expense);
+        expenses.add(expense2);
+
+        //Act
+        double res = serv.getYearExpensesSummary(0);
+
+        //Assert
+        assertEquals(0, res, 0);
+    }
+
+    /**
+     * Tests the getYearExpensesSummary method for a negative year.
+     * It verifies that the summary of expenses for a negative year is 0).
+     */
+    @Test
+    public void getExpensesSummaryByYearWithNegativeYear() {
+        //Arrange
+        ArrayList<Expense> expenses = serv.getAllExpenses();
+
+        expenses.removeAll(serv.getAllExpenses());
+
+        Expense expense = new Expense();
+        Expense expense2 = new Expense();
+
+        expense.setId(1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(2.50);
+        expense.setDate(LocalDate.of(2024,1,1));
+        expense.setCategory(Expense.Category.Health);
+
+        expense2.setId(2);
+        expense2.setDescription("Unit Test2");
+        expense2.setAmount(2.50);
+        expense2.setDate(LocalDate.of(2025,2,1));
+        expense2.setCategory(Expense.Category.Others);
+
+        expenses.add(expense);
+        expenses.add(expense2);
+
+        //Act
+        double res = serv.getYearExpensesSummary(-125);
+
+        //Assert
+        assertEquals(0, res, 0);
+    }
+
+
 }
