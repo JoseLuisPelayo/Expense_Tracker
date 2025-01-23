@@ -8,6 +8,7 @@ import service.ExpenseService;
 import utils.JsonManager;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.concurrent.Callable;
 
 /**
@@ -69,6 +70,13 @@ public class UpdateExpenseCommand implements Callable<Integer> {
         )
         double amount;
 
+    @CommandLine.Option(
+            names = {"-d", "--date"},
+            paramLabel = "<expense date>",
+            description = "Format: 2024-12-22"
+    )
+    LocalDate date;
+
     /**
      * Executes the update expense command.
      * It retrieves, updates, and saves the expense with the specified ID.
@@ -83,13 +91,17 @@ public class UpdateExpenseCommand implements Callable<Integer> {
             return 1;
         }
 
-        if (
-                amount > 0 ||
-                (description != null && !description.isBlank()) ||
-                (category != null && !category.isBlank())
-                ) {
             if (amount > 0) expense.setAmount(amount);
             if (description != null && !description.isBlank()) expense.setDescription(description);
+            if (date != null) {
+                if (date.getYear() < 1900) {
+                    System.err.println(
+                        "The year provided: " + date.getYear() + " is too far \n" +
+                        "Min year permitted is 1900"
+                    );
+                }
+                expense.setDate(date);
+            }
             if (category != null && !category.isEmpty()) {
                 if (!expense.selectCategory(category))
                     System.err.println(
@@ -103,6 +115,7 @@ public class UpdateExpenseCommand implements Callable<Integer> {
 
             if (updatedExpense == null) {
                 System.out.println("[update] Error on updating expense with ID " + expenseID);
+                System.out.println("[update] Maybe needs any optional argument to update the expense");
                 System.out.println("[update] try it again");
                 return 1;
             }
@@ -110,10 +123,5 @@ public class UpdateExpenseCommand implements Callable<Integer> {
             System.out.println("[update] updating the expense ");
             System.out.println(expense);
             return 0;
-
-        } else {
-            System.out.println("[update] Failed to update, need any optional argument to update the expense");
-            return 1;
-        }
     }
 }
