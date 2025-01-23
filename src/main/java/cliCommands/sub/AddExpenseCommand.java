@@ -66,7 +66,8 @@ public class AddExpenseCommand implements Callable<Integer> {
 
     @CommandLine.Option(
             names = {"-d", "--date"},
-            paramLabel = "<expense date>"
+            paramLabel = "<expense date>",
+            description = "Format: 2024-12-22"
     )
     LocalDate date;
 
@@ -87,6 +88,13 @@ public class AddExpenseCommand implements Callable<Integer> {
         expense.setCategory(Expense.Category.Others);
 
         if (date == null) date = LocalDate.now();
+
+        if (date.getYear() < 1900) {
+            System.err.println(
+                    "The year provided: " + date.getYear() + " is too far \n" +
+                            "Min year permitted is 1900"
+            );
+        }
 
         if (category != null && !category.isEmpty()) {
            if (!expense.selectCategory(category)) {
