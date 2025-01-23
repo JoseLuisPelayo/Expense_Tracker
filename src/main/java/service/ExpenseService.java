@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * This class provides services for managing Expense objects.
  * It interacts to the ExpenseRepository to perform CRUD operations and other business logic.
- *
  *  * @author <p>Jose Luis García Pelayo</p>
  *  * @version 1.0.1
  *  * @see MockJsonManager
@@ -53,7 +52,6 @@ public class ExpenseService {
             return repo.updateExpense(expense);
 
         return null;
-
     }
 
     /**
@@ -107,6 +105,7 @@ public class ExpenseService {
                 || expense.getDescription().isEmpty()
                 || expense.getAmount() <= 0
                 || expense.getCategory() == null
+                || expense.getDate().getYear() <= 1900
         )
             return false;
 
