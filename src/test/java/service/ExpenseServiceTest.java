@@ -373,6 +373,73 @@ public class ExpenseServiceTest {
     }
 
     /**
+     * Tests the addExpense method with a less than 1900 year date.
+     * It verifies that the expense is not added and the method returns false.
+     */
+    @Test
+    public void updateExpenseWithLessThan1900Year() {
+        //Arrange
+        Expense expense = new Expense();
+
+        expense.setId(serv.getAllExpenses().getLast().getId() + 1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(0);
+        expense.setDate(LocalDate.of(1899, 1, 1));
+        expense.setCategory(Expense.Category.Health);
+
+        //Act
+        Expense resp = serv.updateExpense(expense);
+
+        //Assert
+        assertNull(resp);
+    }
+
+    /**
+     * Tests the addExpense method with a year 0 date.
+     * It verifies that the expense is not added and the method returns false.
+     */
+    @Test
+    public void updateExpenseWithYear0() {
+        //Arrange
+        Expense expense = new Expense();
+
+        expense.setId(serv.getAllExpenses().getLast().getId() + 1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(0);
+        expense.setDate(LocalDate.of(0, 1, 1));
+        expense.setCategory(Expense.Category.Health);
+
+        //Act
+        Expense resp = serv.updateExpense(expense);
+
+        //Assert
+        assertNull(resp);
+    }
+
+    /**
+     * Tests the addExpense method with a negative year date.
+     * It verifies that the expense is not added and the method returns false.
+     */
+    @Test
+    public void updateExpenseWithNegativeYear() {
+        //Arrange
+        Expense expense = new Expense();
+
+        expense.setId(serv.getAllExpenses().getLast().getId() + 1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(0);
+        expense.setDate(LocalDate.of(-120, 1, 1));
+        expense.setCategory(Expense.Category.Health);
+
+        //Act
+        Expense resp = serv.updateExpense(expense);
+
+        //Assert
+        assertNull(resp);
+    }
+
+
+    /**
      * Tests the deleteExpense method with an existing expense.
      * It verifies that the expense is deleted successfully, the list size decreases by one,
      * and the expense is no longer present in the list.
