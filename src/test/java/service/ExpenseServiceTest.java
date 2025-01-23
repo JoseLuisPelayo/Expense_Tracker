@@ -9,6 +9,7 @@ import utils.MockJsonManager;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -759,5 +760,114 @@ public class ExpenseServiceTest {
         assertEquals(0, res, 0);
     }
 
+    /**
+     * Tests the getExpensesByMonth method for a specific month.
+     * It verifies that the expenses for the given month are retrieved correctly.
+     */
+    @Test
+    public void getAllExpensesByMonth() {
+        //Arrange
+        ArrayList<Expense> expenses = serv.getAllExpenses();
 
+        expenses.removeAll(serv.getAllExpenses());
+
+        Expense expense = new Expense();
+        Expense expense2 = new Expense();
+
+        expense.setId(1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(2.50);
+        expense.setDate(LocalDate.of(2024,1,1));
+        expense.setCategory(Expense.Category.Health);
+
+        expense2.setId(2);
+        expense2.setDescription("Unit Test2");
+        expense2.setAmount(2.50);
+        expense2.setDate(LocalDate.of(2025,2,1));
+        expense2.setCategory(Expense.Category.Others);
+
+        expenses.add(expense);
+        expenses.add(expense2);
+
+        //Act
+        List<Expense> res = serv.getExpensesByMonth(2);
+
+        //Assert
+        assertEquals(1, res.size());
+        assertEquals(expense2, res.getFirst());
+    }
+
+    /**
+     * Tests the getExpensesByYear method for a specific month.
+     * It verifies that the expenses for the given year are retrieved correctly.
+     */
+    @Test
+    public void getAllExpensesByYear() {
+        //Arrange
+        ArrayList<Expense> expenses = serv.getAllExpenses();
+
+        expenses.removeAll(serv.getAllExpenses());
+
+        Expense expense = new Expense();
+        Expense expense2 = new Expense();
+
+        expense.setId(1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(2.50);
+        expense.setDate(LocalDate.of(2024,1,1));
+        expense.setCategory(Expense.Category.Health);
+
+        expense2.setId(2);
+        expense2.setDescription("Unit Test2");
+        expense2.setAmount(2.50);
+        expense2.setDate(LocalDate.of(2025,2,1));
+        expense2.setCategory(Expense.Category.Others);
+
+        expenses.add(expense);
+        expenses.add(expense2);
+
+        //Act
+        List<Expense> res = serv.getExpensesByYear(2024);
+
+        //Assert
+        assertEquals(1, res.size());
+        assertEquals(expense, res.getFirst());
+    }
+
+    /**
+     * Tests the getExpensesByCategory method for a specific category.
+     * It verifies that the expenses for the given category are retrieved correctly.
+     */
+    @Test
+    public void getAllExpensesByCategory() {
+        //Arrange
+        ArrayList<Expense> expenses = serv.getAllExpenses();
+
+        expenses.removeAll(serv.getAllExpenses());
+
+        Expense expense = new Expense();
+        Expense expense2 = new Expense();
+
+        expense.setId(1);
+        expense.setDescription("Unit Test");
+        expense.setAmount(2.50);
+        expense.setDate(LocalDate.of(2024,1,1));
+        expense.setCategory(Expense.Category.Health);
+
+        expense2.setId(2);
+        expense2.setDescription("Unit Test2");
+        expense2.setAmount(2.50);
+        expense2.setDate(LocalDate.of(2025,2,1));
+        expense2.setCategory(Expense.Category.Others);
+
+        expenses.add(expense);
+        expenses.add(expense2);
+
+        //Act
+        List<Expense> res = serv.getExpensesByCategory(Expense.Category.Health);
+
+        //Assert
+        assertEquals(1, res.size());
+        assertEquals(expense, res.getFirst());
+    }
 }
