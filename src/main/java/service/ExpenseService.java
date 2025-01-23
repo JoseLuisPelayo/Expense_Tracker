@@ -195,14 +195,10 @@ public class ExpenseService {
      * @param month The month for which to retrieve expenses (1-12).
      * @return A list of expenses for the specified month.
      */
-    public ArrayList<Expense> getExpensesByMonth(int month) {
-        ArrayList<Expense> expensesByMonth = new ArrayList<>();
-
-        getAllExpenses().stream().
+    public List<Expense> getExpensesByMonth(int month) {
+        return getAllExpenses().stream().
                 filter(expense -> expense.getDate().getMonthValue() == month).
-                forEach(expense -> expensesByMonth.add(expense));
-
-        return expensesByMonth;
+                toList();
     }
 
     /**
@@ -211,14 +207,10 @@ public class ExpenseService {
      * @param year The year for which to retrieve expenses.
      * @return A list of expenses for the specified year.
      */
-    public ArrayList<Expense> getExpensesByYear(int year) {
-        ArrayList<Expense> expensesByYear = new ArrayList<>();
-
-        getAllExpenses().stream().
+    public List<Expense> getExpensesByYear(int year) {
+        return getAllExpenses().stream().
                 filter(expense -> expense.getDate().getYear() == year).
-                forEach(expense -> expensesByYear.add(expense));
-
-        return expensesByYear;
+                toList();
     }
 
     /**
