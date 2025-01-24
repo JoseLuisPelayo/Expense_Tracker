@@ -3,10 +3,11 @@ Xpense tracker is a command-line application for tacking and managing expenses.
 It provides a straightforward way to interact with a expenses database using a simple cli interface.
   
 ## It allows users to
-> - Add new expenses with date, description and amount.  
+> - Add new expenses with date, description, category and amount.  
 > - Update existing expenses.
 > - Delete expenses.  
 > - View all expenses.
+> - View all expenses for a specific category.
 > - View a summary of all expenses.
 > - View a summary of expenses for a specific month.
 > - Save and load expenses from a file.
@@ -52,8 +53,17 @@ Ensure you have the following installed on your system:
    This command add a expense to our history  
     `xpenseTracker add [-hV] [-d=<expense date>] <expense description><expense amount>`  
   - Options are:  
-    -d, --date=<expense date>  
-       -h, --help         Show this help message and exit.  
+    -d, --date="expense date"  
+    -c, --category="expense category"  
+    > possible values:  
+        - GroceriesLeisure  
+        - Electronics  
+        - Utilities  
+        - Clothing  
+        - Health  
+        - Others  
+    
+    -h, --help         Show this help message and exit.  
     -V, --version      Print version information and exit.  
 
 - Update expense  
@@ -61,10 +71,20 @@ Ensure you have the following installed on your system:
     This command update a expense  
       `xpenseTracker update [-hV] [-a=<expense amount>] [-d=<expense description>] <expense ID>`  
   - Options are:  
-  -a, --amount=<expense amount>  
-  -d, --description=<expense description>  
-  -h, --help         Show this help message and exit.  
-  -V, --version      Print version information and exit.  
+  -a, --amount="expense amount"  
+  -d, --description="expense description"  
+  -d, --date="expense date"  
+  -c, --category="expense category"
+  > possible values:  
+      - GroceriesLeisure  
+      - Electronics  
+      - Utilities  
+      - Clothing  
+      - Health  
+      - Others
+  
+-h, --help         Show this help message and exit.  
+-V, --version      Print version information and exit.  
 
 - Remove a expense  
   - Usage:  
@@ -86,7 +106,7 @@ This command find a expense by ID
   - Usage:  
 This command list all expenses  
 `xpenseTracker list [-hV]`  
-  - Options are:  
+  - Options are:
   -h, --help      Show this help message and exit.  
   -V, --version   Print version information and exit.  
 
@@ -95,9 +115,17 @@ This command list all expenses
 This command provide the summary of  expenses    
  `xpenseTracker summary [-hV] [-m=<month number 1 to 12>]`  
   - Options are:  
-  -h, --help      Show this help message and exit.  
-  -m, --month=<month number 1 to 12>  List the summary of the month expenses in the current year  
-  -V, --version   Print version information and exit.
+  - > possible values:
+        - GroceriesLeisure
+        - Electronics
+        - Utilities
+        - Clothing
+        - Health
+        - Others
+    
+-h, --help      Show this help message and exit.  
+-m, --month=<month number 1 to 12>  List the summary of the month expenses in the current year  
+-V, --version   Print version information and exit.
 
 
 ## Uninstall
