@@ -43,7 +43,7 @@ public class UpdateExpenseCommand implements Callable<Integer> {
         int expenseID;
 
         @CommandLine.Option(
-                names = {"-d", "--description"},
+                names = {"-dsc", "--description"},
                 paramLabel = "<expense description>"
         )
         String description;
