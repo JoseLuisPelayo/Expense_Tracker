@@ -8,6 +8,7 @@ import service.ExpenseService;
 import utils.JsonManager;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.concurrent.Callable;
 
 /**
@@ -42,16 +43,39 @@ public class UpdateExpenseCommand implements Callable<Integer> {
         int expenseID;
 
         @CommandLine.Option(
-                names = {"-d", "--description"},
+                names = {"-dsc", "--description"},
                 paramLabel = "<expense description>"
         )
         String description;
+
+        @CommandLine.Option(
+                names = {"-c", "--category"},
+                paramLabel = "<expense category>",
+                description = """
+                    set the category of the expense
+                     possible values:
+                        -GroceriesLeisure
+                        -Electronics
+                        -Utilities
+                        -Clothing
+                        -Health
+                        -Others
+                    """
+        )
+        String category;
 
         @CommandLine.Option(
                 names = {"-a", "--amount"},
                 paramLabel = "<expense amount>"
         )
         double amount;
+
+    @CommandLine.Option(
+            names = {"-d", "--date"},
+            paramLabel = "<expense date>",
+            description = "Format: 2024-12-22"
+    )
+    LocalDate date;
 
     /**
      * Executes the update expense command.
@@ -67,14 +91,31 @@ public class UpdateExpenseCommand implements Callable<Integer> {
             return 1;
         }
 
-        if (amount > 0 || (description != null && !description.isBlank())) {
             if (amount > 0) expense.setAmount(amount);
             if (description != null && !description.isBlank()) expense.setDescription(description);
+            if (date != null) {
+                if (date.getYear() < 1900) {
+                    System.err.println(
+                        "The year provided: " + date.getYear() + " is too far \n" +
+                        "Min year permitted is 1900"
+                    );
+                }
+                expense.setDate(date);
+            }
+            if (category != null && !category.isEmpty()) {
+                if (!expense.selectCategory(category))
+                    System.err.println(
+                            "This category: " + category + " does not exist \n" +
+                                    "The expense be added to others category"
+                    );
+                expense.setCategory(Expense.Category.Others);
+            }
 
             Expense updatedExpense = serv.updateExpense(expense);
 
             if (updatedExpense == null) {
                 System.out.println("[update] Error on updating expense with ID " + expenseID);
+                System.out.println("[update] Maybe needs any optional argument to update the expense");
                 System.out.println("[update] try it again");
                 return 1;
             }
@@ -82,10 +123,5 @@ public class UpdateExpenseCommand implements Callable<Integer> {
             System.out.println("[update] updating the expense ");
             System.out.println(expense);
             return 0;
-
-        } else {
-            System.out.println("[update] Failed to update, need any optional argument to update the expense");
-            return 1;
-        }
     }
 }

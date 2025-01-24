@@ -7,10 +7,14 @@ import repository.Repository;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class provides services for managing Expense objects.
  * It interacts to the ExpenseRepository to perform CRUD operations and other business logic.
+ *  * @author <p>Jose Luis García Pelayo</p>
+ *  * @version 1.0.1
+ *  * @see MockJsonManager
  */
 public class ExpenseService {
     Repository repo;
@@ -32,9 +36,7 @@ public class ExpenseService {
      * @return true if the expense was successfully added, false otherwise
      */
     public boolean addExpense(Expense expense) {
-        if (expense != null)
-            if (!expense.getDescription().isEmpty() && expense.getAmount() > 0)
-                return repo.addExpense(expense);
+        if (expenseIsValid(expense)) return repo.addExpense(expense);
 
         return false;
     }
@@ -46,14 +48,10 @@ public class ExpenseService {
      * @return the updated expense object if successful, null otherwise
      */
     public Expense updateExpense(Expense expense) {
-        if (
-                !repo.getAllExpenses().contains(expense)
-                || expense.getDescription().isEmpty()
-                || expense.getAmount() <= 0
-        )
-            return null;
+        if (expenseIsValid(expense) && repo.getAllExpenses().contains(expense))
+            return repo.updateExpense(expense);
 
-        return repo.updateExpense(expense);
+        return null;
     }
 
     /**
@@ -64,7 +62,9 @@ public class ExpenseService {
      */
     public boolean deleteExpense(int id) {
         Expense expense = repo.getExpenseById(id);
+
         if (expense != null) return repo.deleteExpense(expense);
+
         return false;
     }
 
@@ -88,7 +88,32 @@ public class ExpenseService {
     }
 
     /**
-     * Calculates the total amount of all expenses.
+     * Validates an expense object.
+     * This method checks whether the given expense object is valid. An expense is considered valid if:
+     * - It is not null.
+     * - The description is not null and not empty.
+     * - The amount is greater than 0.
+     * - The category is not null.
+     *
+     * @param expense The expense object to be validated.
+     * @return {@code true} if the expense is valid; {@code false} otherwise.
+     */
+    private boolean expenseIsValid(Expense expense) {
+        if (
+                expense == null
+                || expense.getDescription() == null
+                || expense.getDescription().isEmpty()
+                || expense.getAmount() <= 0
+                || expense.getCategory() == null
+                || expense.getDate().getYear() <= 1900
+        )
+            return false;
+
+        return true;
+    }
+
+    /**
+     * Calculates the total amount of all expenses of the current year.
      *
      * @return the sum of all expenses
      */
@@ -97,7 +122,8 @@ public class ExpenseService {
         double sum = 0;
 
         for (Expense expense : expenses) {
-            sum += expense.getAmount();
+            if (expense.getDate().getYear() == LocalDate.now().getYear())
+                sum += expense.getAmount();
         }
 
         return sum;
@@ -122,5 +148,83 @@ public class ExpenseService {
         }
 
         return sum;
+    }
+
+    /**
+     * Calculates the total amount of expenses for a specific category.
+     * This method filters the list of all expenses to include only those in the specified category,
+     * then calculates the sum of their amounts.
+     *
+     * @param category The category for which to calculate the total expenses.
+     * @return The total amount of expenses for the specified category.
+     */
+    public double getExpensesSummary(Expense.Category category) {
+        double sum = 0;
+        List<Expense> expenses = getAllExpenses().stream()
+                .filter(expense -> expense.getCategory().equals(category))
+                .toList();
+
+        for (Expense expense : expenses) {
+            sum += expense.getAmount();
+        }
+
+        return sum;
+    }
+
+    /**
+     * Calculates the total amount of all expenses for a specific year
+     *
+     * @param year the number of year for which to calculate the expense summary
+     * @return the sum of all expenses for the specified year
+     */
+    public double getYearExpensesSummary(int year) {
+        ArrayList<Expense> expenses = getAllExpenses();
+        double sum = 0;
+
+        for (Expense expense : expenses) {
+            if (expense.getDate().getYear() == year)
+                sum += expense.getAmount();
+        }
+
+        return sum;
+    }
+
+    /**
+     * Retrieves all expenses for a specific month.
+     *
+     * @param month The month for which to retrieve expenses (1-12).
+     * @return A list of expenses for the specified month.
+     */
+    public List<Expense> getExpensesByMonth(int month) {
+        return getAllExpenses().stream().
+                filter(expense -> expense.getDate().getMonthValue() == month).
+                toList();
+    }
+
+    /**
+     * Retrieves all expenses for a specific year.
+     *
+     * @param year The year for which to retrieve expenses.
+     * @return A list of expenses for the specified year.
+     */
+    public List<Expense> getExpensesByYear(int year) {
+        return getAllExpenses().stream().
+                filter(expense -> expense.getDate().getYear() == year).
+                toList();
+    }
+
+    /**
+     * Retrieves all expenses for a specific category in the current year.
+     *
+     * @param category The category for which to retrieve expenses.
+     * @return A list of expenses for the specified category in the current year.
+     */
+    public List<Expense> getExpensesByCategory(Expense.Category category) {
+        return getAllExpenses().stream().
+                filter(
+                        expense -> expense.getCategory().equals(category)
+                        && expense.getDate().getYear() == LocalDate.now().getYear()
+                ).
+                toList();
     }
 }

@@ -20,7 +20,7 @@ import java.util.concurrent.Callable;
         mixinStandardHelpOptions = true,
         description = "This command add a expense to our history",
         requiredOptionMarker = '*',
-        header = "Update a expense",
+        header = "Add a expense",
         footer = "%nDeveloped By Jose Luis G.Pelayo",
         optionListHeading = "%nOptions are:%n"
 )
@@ -49,8 +49,25 @@ public class AddExpenseCommand implements Callable<Integer> {
     double amount;
 
     @CommandLine.Option(
+            names = {"-c", "--category"},
+            paramLabel = "<expense category>",
+            description = """
+                    set the category of the expense
+                     possible values:
+                        -GroceriesLeisure
+                        -Electronics
+                        -Utilities
+                        -Clothing
+                        -Health
+                        -Others
+                    """
+    )
+    String category;
+
+    @CommandLine.Option(
             names = {"-d", "--date"},
-            paramLabel = "<expense date>"
+            paramLabel = "<expense date>",
+            description = "Format: 2024-12-22"
     )
     LocalDate date;
 
@@ -63,12 +80,31 @@ public class AddExpenseCommand implements Callable<Integer> {
      */
     @Override
     public Integer call() throws IOException {
-        Expense expense = new Expense(
-                (serv.getAllExpenses().isEmpty()) ? 1 : serv.getAllExpenses().getLast().getId() + 1,
-                description,
-                amount,
-                LocalDate.now()
-        );
+        Expense expense = new Expense();
+        expense.setId(serv.getAllExpenses().isEmpty() ? 1 : serv.getAllExpenses().getLast().getId() + 1);
+        expense.setDescription(description);
+        expense.setAmount(amount);
+        expense.setDate(date);
+        expense.setCategory(Expense.Category.Others);
+
+        if (date == null) date = LocalDate.now();
+
+        if (date.getYear() < 1900) {
+            System.err.println(
+                    "The year provided: " + date.getYear() + " is too far \n" +
+                            "Min year permitted is 1900"
+            );
+        }
+
+        if (category != null && !category.isEmpty()) {
+           if (!expense.selectCategory(category)) {
+               System.err.println(
+                       "This category: " + category + " does not exist \n" +
+                       "The expense be added to others category"
+               );
+                expense.setCategory(Expense.Category.Others);
+           }
+        }
 
         if (date != null)
             expense.setDate(date);
