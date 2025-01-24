@@ -17,7 +17,7 @@ public class JsonManager implements IJsonManager{
     /**
      * Converts JSON data from a file to a List of objects of the specifies class.
      *
-     * @param file the file containeng the JSON data
+     * @param file the file containing the JSON data
      * @param <T> the type of the objects in the list
      * @param myClass the class of the objects in the list
      * @return return a list of objects of the specified class or an empty list if an error occurs or the file is empty

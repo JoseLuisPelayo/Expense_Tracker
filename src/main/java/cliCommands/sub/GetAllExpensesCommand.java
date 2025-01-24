@@ -1,13 +1,14 @@
 package cliCommands.sub;
 
 import javabean.Expense;
+import picocli.CommandLine;
 import picocli.CommandLine.*;
 import repository.ExpenseRepository;
 import service.ExpenseService;
 import utils.JsonManager;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -28,6 +29,22 @@ import java.util.concurrent.Callable;
 public class GetAllExpensesCommand implements Callable<Integer> {
     ExpenseService serv = new ExpenseService(new ExpenseRepository(new JsonManager()));
 
+    @CommandLine.Option(
+            names = {"-c", "--category"},
+            paramLabel = "<expense category>",
+            description = """
+                    set the category of the expense
+                     possible values:
+                        -GroceriesLeisure
+                        -Electronics
+                        -Utilities
+                        -Clothing
+                        -Health
+                        -Others
+                    """
+    )
+    String category;
+
     /**
      * Constructs a GetAllExpensesCommand and initializes the ExpenseService.
      *
@@ -43,10 +60,14 @@ public class GetAllExpensesCommand implements Callable<Integer> {
      * @return 0 if the command executed successfully
      */
     public Integer call() {
-        ArrayList<Expense> expenses = serv.getAllExpenses();
+        List<Expense> expenses = serv.getAllExpenses();
             if (expenses.isEmpty()) {
                 System.out.println("No expenses found");
                 return 0;
+            }
+
+            if (category != null) {
+                expenses = serv.getExpensesByCategory(Expense.Category.valueOf("Others"));
             }
 
             for (Expense expense : expenses) {
