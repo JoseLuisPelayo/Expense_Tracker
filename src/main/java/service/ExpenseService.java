@@ -214,14 +214,17 @@ public class ExpenseService {
     }
 
     /**
-     * Retrieves all expenses for a specific category.
+     * Retrieves all expenses for a specific category in the current year.
      *
      * @param category The category for which to retrieve expenses.
-     * @return A list of expenses for the specified category.
+     * @return A list of expenses for the specified category in the current year.
      */
     public List<Expense> getExpensesByCategory(Expense.Category category) {
         return getAllExpenses().stream().
-                filter(expense -> expense.getCategory().equals(category)).
+                filter(
+                        expense -> expense.getCategory().equals(category)
+                        && expense.getDate().getYear() == LocalDate.now().getYear()
+                ).
                 toList();
     }
 }
